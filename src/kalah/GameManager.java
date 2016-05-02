@@ -54,7 +54,7 @@ public class GameManager {
 
 			// step 1
 			houseSelected();
-
+			
 		}
 
 	}
@@ -66,6 +66,10 @@ public class GameManager {
 		increment = 1;
 		while((seedsRemaining>0)&&((index+increment)<=5)) {
 			placeSeedsOnCurrentPlayerSide((index+increment));
+		}
+		
+		if(seedsRemaining>0) {
+			putInStoreOfCurrentPlayer();
 		}
 
 
@@ -79,6 +83,27 @@ public class GameManager {
 
 		run();
 
+	}
+	
+	
+	private void putInStoreOfCurrentPlayer() {
+		seedsRemaining--;
+		
+		if(seedsRemaining==0) {
+			currentPlayer.store = currentPlayer.store + 1;
+			// take away one from chosen house
+			currentPlayer.getHouses()[index] = currentPlayer.getHouses()[index] -1; 
+			// no swapping players as getting it in the store last
+		}else {
+			// add to store
+			currentPlayer.store = currentPlayer.store + 1;
+			// take away one from chosen house
+			currentPlayer.getHouses()[index] = currentPlayer.getHouses()[index] -1; 
+			swapCurrentPlayer();
+		}
+		
+		
+		
 	}
 
 	private void placeSeedsOnCurrentPlayerSide(int house) {
