@@ -31,7 +31,8 @@ public class Kalah {
 		
 		PrintingManager p = new PrintingManager(io);
 		
-		GameManager gm = new GameManager(one,two,p,one);
+		GameManager gm = new GameManager(one,two,p);
+		gm.setCurrentPlayer(one);
 		gm.run();
 	}
 }

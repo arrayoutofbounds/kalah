@@ -15,18 +15,20 @@ public class PrintingManager {
 		return in;
 	}
 
-	public void gameOver(Player one, Player two) {
+	public void print(Player one, Player two,boolean gameOver) {
 		// so sorted by id in arguments
 		int[] one_house = one.getHouses();
 		int[] two_house = two.getHouses();
-		
-		io.println("Game over");
+		if(gameOver) {
+			io.println("Game over");
+		}
 		io.println("+----+-------+-------+-------+-------+-------+-------+----+");
 		io.println("| P2 | 6[" + convertToString(two_house[5])+ "] | 5[" + convertToString(two_house[4])+ "] | 4[" + convertToString(two_house[3])+ "] | 3[" + convertToString(two_house[2])+ "] | 2[" + convertToString(two_house[1])+ "] | 1[" + convertToString(two_house[0])+ "] | " + convertToString(one.getStore()) + " |");
 		io.println("|    |-------+-------+-------+-------+-------+-------|    |");
 		io.println("| " + convertToString(two.getStore()) + " | 1[" + convertToString(one_house[0])+ "] | 2[" +convertToString(one_house[1])+ "] | 3[" + convertToString(one_house[2])+ "] | 4[" + convertToString(one_house[3])+ "] | 5[" + convertToString(one_house[4])+ "] | 6[" + convertToString(one_house[5])+ "] | P1 |");
 		io.println("+----+-------+-------+-------+-------+-------+-------+----+");
 	}
+	
 
 	private String convertToString(int h) {
 		String toPrint = "";
