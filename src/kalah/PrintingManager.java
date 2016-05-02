@@ -29,6 +29,9 @@ public class PrintingManager {
 		io.println("+----+-------+-------+-------+-------+-------+-------+----+");
 	}
 	
+	public void printHouseEmpty() {
+		io.println("House is empty. Move again.");
+	}
 
 	private String convertToString(int h) {
 		String toPrint = "";

@@ -48,16 +48,24 @@ public class GameManager {
 		}else {
 			// they did not press quit 
 
-			// so a house has been picked
+			// check if the house they selected has seeds in it or not
+			// if not then printAndRun() again
+			if(currentPlayer.getHouses()[input-1] == 0) {
+				print.printHouseEmpty();
+				printAndRunAgain();
+			}else {
 
-			// break the board into 4 sections
-			// 1. current players side of the board
-			// 2. current players store
-			// 3. opp players side of the board
-			// 4. back around to this player 
+				// so a house has been picked
 
-			// step 1
-			houseSelected();
+				// break the board into 4 sections
+				// 1. current players side of the board
+				// 2. current players store
+				// 3. opp players side of the board
+				// 4. back around to this player 
+
+				// step 1
+				houseSelected();
+			}
 
 		}
 
@@ -71,7 +79,7 @@ public class GameManager {
 		while((seedsRemaining>0)&&((index+increment)<=5)) {
 			placeSeedsOnCurrentPlayerSide((index+increment));
 		}
-		System.out.println(seedsRemaining);
+
 		// if there were remaining then they were put in the store after reaching the end
 		if(seedsRemaining>0) {
 			putInStoreOfCurrentPlayer();
@@ -154,6 +162,9 @@ public class GameManager {
 
 	}
 
+	/**
+	 * This method prints and then get the input by running the run method again
+	 */
 	private void printAndRunAgain() {
 		int id_1 = one.getId();
 		int id_2 = two.getId();
