@@ -11,7 +11,7 @@ public class Player {
 	
 	private Player opposing;
 	
-	private int store;
+	public int store;
 	
 	
 	public Player(int numberOfHouses,int initialSeeds) {

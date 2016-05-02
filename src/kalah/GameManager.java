@@ -92,9 +92,44 @@ public class GameManager {
 
 				currentPlayer.getHouses()[index] = currentPlayer.getHouses()[index] -1; 
 				currentPlayer.getHouses()[house]++; // the house gets add a seed
-				increment++;
+				increment = 1;
+				swapCurrentPlayer(); // as this player no longer has the turn
 			}
-			swapCurrentPlayer();
+			
+			if(houseLastPutIn == 0) {
+				
+				// if opp house has 0 seeds then no capture
+				// else capture
+				int oppHouseIndex = getOppHouseIndex(house);
+				int oppHouseSeeds = currentPlayer.getOpposingPlayer().getHouses()[oppHouseIndex];
+				
+				if(oppHouseSeeds ==0) {
+					//NO CAPTURE
+					currentPlayer.getHouses()[index] = currentPlayer.getHouses()[index] -1; 
+					currentPlayer.getHouses()[house]++; // the house gets add a seed
+					increment = 1;
+					swapCurrentPlayer(); // as this player no longer has the turn
+				}else {
+					// CAPTURE
+					
+					// remove all seeds from opp house
+					currentPlayer.getOpposingPlayer().getHouses()[oppHouseIndex] = 0;
+					
+					// original house down by one
+					currentPlayer.getHouses()[index] = currentPlayer.getHouses()[index] -1; 
+					
+					//no need to add to the current index as it goes to the store directly
+					currentPlayer.store = currentPlayer.store + oppHouseSeeds + 1;
+					
+					// set increment back to 1
+					increment = 1;
+					
+					swapCurrentPlayer(); // as this player no longer has the turn
+					
+				}
+				
+			}
+			
 		}else {
 			// the house that had the seeds has one taken away from it
 			currentPlayer.getHouses()[index] = currentPlayer.getHouses()[index] -1; 
@@ -102,6 +137,27 @@ public class GameManager {
 			increment++;
 		}
 
+	}
+	
+	private int getOppHouseIndex(int currentHouseIndex) {
+		
+		if(currentHouseIndex == 0) {
+			return 5;
+		}else if(currentHouseIndex == 1) {
+			return 4;
+		}else if(currentHouseIndex == 2) {
+			return 3;
+		}else if(currentHouseIndex == 3) {
+			return 2;
+		}else if(currentHouseIndex == 4) {
+			return 1;
+		}else if(currentHouseIndex == 5) {
+			return 0;
+		}else {
+			System.out.println("Sorry you cannot have a index beyong 0 and 5");
+			return -1;
+		}
+		
 	}
 	
 	private void swapCurrentPlayer() {
