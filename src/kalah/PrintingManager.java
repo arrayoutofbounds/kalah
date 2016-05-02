@@ -29,6 +29,40 @@ public class PrintingManager {
 		io.println("+----+-------+-------+-------+-------+-------+-------+----+");
 	}
 	
+	public void noMovesLeft(Player one,Player two) {
+		print(one, two, true);
+		int score1 = 0;
+		int score2 = 0;
+		
+		for(int i =0;i<one.getHouses().length;i++) {
+			score1 = score1 + one.getHouses()[i];
+		}
+		score1 = score1 + one.store;
+		
+		for(int j =0;j<two.getHouses().length;j++) {
+			score2 = score2 + two.getHouses()[j];
+		}
+		score2 = score2 + two.store;
+		
+		io.println("\tplayer 1:" + score1);
+		io.println("\tplayer 2:" + score2);
+		
+		if(score1>score2) {
+			io.println("Player 1 wins!");
+		}
+		
+		if(score1<score2) {
+			io.println("Player 2 wins!");
+		}
+		
+		if(score1==score2) {
+			io.println("A tie!");
+		}
+		
+		
+		
+	}
+	
 	public void printHouseEmpty() {
 		io.println("House is empty. Move again.");
 	}

@@ -29,46 +29,64 @@ public class GameManager {
 	}
 
 	public void run() {
-		if(initialDone == false) {
-			input = print.printInitial();
-			initialDone=true;
+
+		// check if the current player has any moves left. if not, then the game finishes
+		boolean movesLeft = checkIfMovesLeft();
+		if(movesLeft==false) {
+			print.noMovesLeft(one,two);
 		}else {
-			input = print.getInput(currentPlayer);
-		}
-		// input is already in correct format
-		if(input==-1) {
-			int id_1 = one.getId();
-			int id_2 = two.getId();
-			if(id_1 == 1) {
-				print.print(one,two,true);
+
+			if(initialDone == false) {
+				input = print.printInitial();
+				initialDone=true;
 			}else {
-				print.print(two,one,true);
+				input = print.getInput(currentPlayer);
 			}
+			// input is already in correct format
+			if(input==-1) {
+				int id_1 = one.getId();
+				int id_2 = two.getId();
+				if(id_1 == 1) {
+					print.print(one,two,true);
+				}else {
+					print.print(two,one,true);
+				}
 
-		}else {
-			// they did not press quit 
-
-			// check if the house they selected has seeds in it or not
-			// if not then printAndRun() again
-			if(currentPlayer.getHouses()[input-1] == 0) {
-				print.printHouseEmpty();
-				printAndRunAgain();
 			}else {
+				// they did not press quit 
 
-				// so a house has been picked
+				// check if the house they selected has seeds in it or not
+				// if not then printAndRun() again
+				if(currentPlayer.getHouses()[input-1] == 0) {
+					print.printHouseEmpty();
+					printAndRunAgain();
+				}else {
 
-				// break the board into 4 sections
-				// 1. current players side of the board
-				// 2. current players store
-				// 3. opp players side of the board
-				// 4. back around to this player 
+					// so a house has been picked
 
-				// step 1
-				houseSelected();
+					// break the board into 4 sections
+					// 1. current players side of the board
+					// 2. current players store
+					// 3. opp players side of the board
+					// 4. back around to this player 
+
+					// step 1
+					houseSelected();
+				}
+
 			}
-
 		}
+	}
 
+	private boolean checkIfMovesLeft() {
+		boolean movesLeft = false;
+		for(int i =0;i<currentPlayer.getHouses().length;i++) {
+			if(currentPlayer.getHouses()[i]>0) {
+				movesLeft = true;
+				break;
+			}
+		}
+		return movesLeft;
 	}
 
 	private void houseSelected() {
