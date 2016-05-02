@@ -69,13 +69,13 @@ public class GameManager {
 		while((seedsRemaining>0)&&((index+increment)<=5)) {
 			placeSeedsOnCurrentPlayerSide((index+increment));
 		}
-
+		System.out.println(seedsRemaining);
 		// if there were remaining then they were put in the store after reaching the end
 		if(seedsRemaining>0) {
 			putInStoreOfCurrentPlayer();
 
 		}
-
+		
 		// if still remaining then put on the opposite players side
 		opposingIncrement = 0;
 		oppositionHousesRemaining = true;
@@ -147,11 +147,13 @@ public class GameManager {
 			// take away one from chosen house
 			currentPlayer.getHouses()[index] = currentPlayer.getHouses()[index] -1; 
 			// no swapping players as getting it in the store last
+			printAndRunAgain();
 		}else {
 			// add to store
 			currentPlayer.store = currentPlayer.store + 1;
 			// take away one from chosen house
 			currentPlayer.getHouses()[index] = currentPlayer.getHouses()[index] -1; 
+			// not 0 yet so more seeds hence no print
 		}
 
 
