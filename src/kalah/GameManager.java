@@ -11,6 +11,8 @@ public class GameManager {
 	private boolean initialDone = false;
 
 	private int increment;
+	private int opposingIncrement;
+	private boolean oppositionHousesRemaining;
 
 	private int seedsRemaining;
 
@@ -54,7 +56,7 @@ public class GameManager {
 
 			// step 1
 			houseSelected();
-			
+
 		}
 
 	}
@@ -67,12 +69,23 @@ public class GameManager {
 		while((seedsRemaining>0)&&((index+increment)<=5)) {
 			placeSeedsOnCurrentPlayerSide((index+increment));
 		}
-		
+
+		// if there were remaining then they were put in the store after reaching the end
 		if(seedsRemaining>0) {
 			putInStoreOfCurrentPlayer();
+
 		}
 
+		// if still remaining then put on the opposite players side
+		opposingIncrement = 0;
+		oppositionHousesRemaining = true;
+		while((seedsRemaining>0) && (oppositionHousesRemaining == true) && (opposingIncrement<6)) {
+			putSeedsInOppositionHouses();
+		}
 
+	}
+
+	private void printAndRunAgain() {
 		int id_1 = one.getId();
 		int id_2 = two.getId();
 		if(id_1 == 1) {
@@ -82,13 +95,53 @@ public class GameManager {
 		}
 
 		run();
-
 	}
-	
-	
+
+	private void putSeedsInOppositionHouses() {
+
+		if(opposingIncrement>5) {
+			oppositionHousesRemaining = false;
+			opposingIncrement = 0;
+		}else {
+
+			//decrement the seeds
+			seedsRemaining--;
+
+			if(seedsRemaining==0) {
+				// minus from original house
+				currentPlayer.getHouses()[index] = currentPlayer.getHouses()[index] -1; 
+
+				// add to opposite players house
+				currentPlayer.getOpposingPlayer().getHouses()[opposingIncrement] = currentPlayer.getOpposingPlayer().getHouses()[opposingIncrement] + 1;
+
+				opposingIncrement = 0;
+				oppositionHousesRemaining = true;
+
+				// ending on opp player means its the other players turn
+				swapCurrentPlayer();
+				printAndRunAgain();
+			}else {
+				// minus from original house
+				currentPlayer.getHouses()[index] = currentPlayer.getHouses()[index] -1; 
+
+				// add to opposite players house
+				currentPlayer.getOpposingPlayer().getHouses()[opposingIncrement] = currentPlayer.getOpposingPlayer().getHouses()[opposingIncrement] + 1;
+
+				// increment to next house of opposition
+				opposingIncrement++;
+
+				oppositionHousesRemaining = true;
+			}
+
+
+
+
+		}
+	}
+
 	private void putInStoreOfCurrentPlayer() {
 		seedsRemaining--;
-		
+
 		if(seedsRemaining==0) {
 			currentPlayer.store = currentPlayer.store + 1;
 			// take away one from chosen house
@@ -99,11 +152,10 @@ public class GameManager {
 			currentPlayer.store = currentPlayer.store + 1;
 			// take away one from chosen house
 			currentPlayer.getHouses()[index] = currentPlayer.getHouses()[index] -1; 
-			swapCurrentPlayer();
 		}
-		
-		
-		
+
+
+
 	}
 
 	private void placeSeedsOnCurrentPlayerSide(int house) {
@@ -119,42 +171,44 @@ public class GameManager {
 				currentPlayer.getHouses()[house]++; // the house gets add a seed
 				increment = 1;
 				swapCurrentPlayer(); // as this player no longer has the turn
+				printAndRunAgain();
 			}
-			
+
 			if(houseLastPutIn == 0) {
-				
+
 				// if opp house has 0 seeds then no capture
 				// else capture
 				int oppHouseIndex = getOppHouseIndex(house);
 				int oppHouseSeeds = currentPlayer.getOpposingPlayer().getHouses()[oppHouseIndex];
-				
+
 				if(oppHouseSeeds ==0) {
 					//NO CAPTURE
 					currentPlayer.getHouses()[index] = currentPlayer.getHouses()[index] -1; 
 					currentPlayer.getHouses()[house]++; // the house gets add a seed
 					increment = 1;
 					swapCurrentPlayer(); // as this player no longer has the turn
+					printAndRunAgain();
 				}else {
 					// CAPTURE
-					
+
 					// remove all seeds from opp house
 					currentPlayer.getOpposingPlayer().getHouses()[oppHouseIndex] = 0;
-					
+
 					// original house down by one
 					currentPlayer.getHouses()[index] = currentPlayer.getHouses()[index] -1; 
-					
+
 					//no need to add to the current index as it goes to the store directly
 					currentPlayer.store = currentPlayer.store + oppHouseSeeds + 1;
-					
+
 					// set increment back to 1
 					increment = 1;
-					
+
 					swapCurrentPlayer(); // as this player no longer has the turn
-					
+					printAndRunAgain();
 				}
-				
+
 			}
-			
+
 		}else {
 			// the house that had the seeds has one taken away from it
 			currentPlayer.getHouses()[index] = currentPlayer.getHouses()[index] -1; 
@@ -163,9 +217,9 @@ public class GameManager {
 		}
 
 	}
-	
+
 	private int getOppHouseIndex(int currentHouseIndex) {
-		
+
 		if(currentHouseIndex == 0) {
 			return 5;
 		}else if(currentHouseIndex == 1) {
@@ -182,13 +236,13 @@ public class GameManager {
 			System.out.println("Sorry you cannot have a index beyong 0 and 5");
 			return -1;
 		}
-		
+
 	}
-	
+
 	private void swapCurrentPlayer() {
 		// p1 has id 1
 		// p2 has id 2
-		
+
 		if(currentPlayer.getId() == 1) {
 			currentPlayer = two;
 		}else {
