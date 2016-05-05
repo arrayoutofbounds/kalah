@@ -20,10 +20,10 @@ public class GameManager {
 
 
 	//private int addToIndexHouseLater;
-	
+
 	//if(addToIndexHouseLater>0) {
-		//currentPlayer.getHouses()[index] = currentPlayer.getHouses()[index] + addToIndexHouseLater;
-		//addToIndexHouseLater=0;
+	//currentPlayer.getHouses()[index] = currentPlayer.getHouses()[index] + addToIndexHouseLater;
+	//addToIndexHouseLater=0;
 	//}
 
 	public GameManager(Player one,Player two,PrintingManager p) {
@@ -41,7 +41,7 @@ public class GameManager {
 		// check if the current player has any moves left. if not, then the game finishes
 		boolean movesLeft = checkIfMovesLeft();
 		if(movesLeft==false) {
-			print.noMovesLeft(one,two);
+			print.noMovesLeft();
 		}else {
 
 			if(initialDone == false) {
@@ -52,13 +52,9 @@ public class GameManager {
 			}
 			// input is already in correct format
 			if(input==-1) {
-				int id_1 = one.getId();
-				int id_2 = two.getId();
-				if(id_1 == 1) {
-					print.print(one,two,true);
-				}else {
-					print.print(two,one,true);
-				}
+
+				print.print(true);
+
 
 			}else {
 				// they did not press quit 
@@ -129,7 +125,7 @@ public class GameManager {
 	}
 
 	private void wrapAround() {
-		
+
 		seedsRemaining--;
 
 		if(seedsRemaining==0) {
@@ -138,7 +134,7 @@ public class GameManager {
 			int houseLastPutIn = currentPlayer.getHouses()[wrapIndex];
 
 			if(houseLastPutIn != 0) {
-				
+
 				if((currentPlayer.getHouses()[index] ==1)&&(index==wrapIndex)) {
 					int oppHouseIndex = getOppHouseIndex(wrapIndex);
 					int oppHouseSeeds = currentPlayer.getOpposingPlayer().getHouses()[oppHouseIndex];
@@ -152,7 +148,7 @@ public class GameManager {
 						printAndRunAgain();
 					}else {
 						// CAPTURE
-						
+
 
 						// remove all seeds from opp house
 						currentPlayer.getOpposingPlayer().getHouses()[oppHouseIndex] = 0;
@@ -173,7 +169,7 @@ public class GameManager {
 					//System.out.println(currentPlayer.getHouses()[index]);
 					currentPlayer.getHouses()[index] = currentPlayer.getHouses()[index] -1; 
 					currentPlayer.getHouses()[wrapIndex]++; // the house gets add a seed
-					
+
 					wrapIndex = 0;
 					swapCurrentPlayer(); // as this player no longer has the turn
 					printAndRunAgain();
@@ -181,7 +177,7 @@ public class GameManager {
 			}
 
 			if(houseLastPutIn == 0) {
-				
+
 				// if opp house has 0 seeds then no capture
 				// else capture
 				int oppHouseIndex = getOppHouseIndex(wrapIndex);
@@ -196,7 +192,7 @@ public class GameManager {
 					printAndRunAgain();
 				}else {
 					// CAPTURE
-					
+
 
 					// remove all seeds from opp house
 					currentPlayer.getOpposingPlayer().getHouses()[oppHouseIndex] = 0;
@@ -230,13 +226,8 @@ public class GameManager {
 	 * This method prints and then get the input by running the run method again
 	 */
 	private void printAndRunAgain() {
-		int id_1 = one.getId();
-		int id_2 = two.getId();
-		if(id_1 == 1) {
-			print.print(one,two,false);
-		}else {
-			print.print(two,one,false);
-		}
+
+		print.print(false);
 
 		run();
 	}
@@ -306,7 +297,7 @@ public class GameManager {
 
 	private void placeSeedsOnCurrentPlayerSide(int house) {
 		seedsRemaining--;
-	
+
 
 		if(seedsRemaining==0) {
 
@@ -337,8 +328,8 @@ public class GameManager {
 					printAndRunAgain();
 				}else {
 					// CAPTURE
-					
-					
+
+
 
 					// remove all seeds from opp house
 					currentPlayer.getOpposingPlayer().getHouses()[oppHouseIndex] = 0;
